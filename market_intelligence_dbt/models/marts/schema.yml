@@ -1,0 +1,28 @@
+version: 2
+
+models:
+  - name: mart_daily_prices
+    description: "Mart layer table containing stock price history and daily rolling financial metrics."
+
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+          arguments:
+            combination_of_columns:
+              - symbol
+              - date
+
+    columns:
+      - name: symbol
+        description: "The unique ticker identifier for the financial asset."
+        data_tests:
+          - not_null
+
+      - name: date
+        description: "The calendar date the market metrics were recorded."
+        data_tests:
+          - not_null
+
+      - name: daily_range
+        description: "The intraday volatility proxy calculation (High minus Low)."
+        data_tests:
+          - not_null

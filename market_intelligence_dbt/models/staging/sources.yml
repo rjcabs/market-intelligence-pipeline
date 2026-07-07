@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: market_intelligence
+    database: market-intelligence-pipeline
+    schema: market_intelligence
+    tables:
+      - name: market-intelligence-raw

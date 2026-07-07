@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: stg_daily_prices
+    tests:
+      - unique:
+          column_name: "symbol || '-' || cast(date as string)"
+    columns:
+      - name: date
+        tests:
+          - not_null
+      - name: symbol
+        tests:
+          - not_null
+      - name: close
+        tests:
+          - not_null
+      - name: volume
+        tests:
+          - not_null
