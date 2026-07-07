@@ -7,3 +7,5 @@ market-intelligence-env/
 dbt-env/
 market_intelligence_dbt/dbt_packages/
 market_intelligence_dbt/target/
+logs/
+*.log
