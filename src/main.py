@@ -5,6 +5,7 @@ if __name__ == '__main__':
     import logging
     import bigquery_loader
     import schemas
+    import time
     from storage import save_to_parquet
     from pathlib import Path
     from datetime import date
@@ -38,6 +39,7 @@ if __name__ == '__main__':
             output_dict = save_to_parquet(prices, ticker)
             output = output_dict["dir"] / output_dict["filename"]
             logging.info(f'API response succesfully saved to {output}')
+            time.sleep(15)
 
             if output.exists():
                 gcs_uri = cloud_storage.upload_to_gcs (output, bucket_name, ticker, storage_client)

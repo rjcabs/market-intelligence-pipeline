@@ -13,7 +13,7 @@ def create_bigquery_table(gcs_uri, table_id, bigquery_client):
     job_config = bigquery.LoadJobConfig(
         autodetect=True,
         source_format=bigquery.SourceFormat.PARQUET,
-        write_disposition=bigquery.WriteDisposition.WRITE_APPEND
+        write_disposition=bigquery.WriteDisposition.WRITE_TRUNCATE
     )
     
     try:
