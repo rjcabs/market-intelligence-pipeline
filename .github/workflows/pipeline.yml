@@ -1,0 +1,74 @@
+name: Market Intelligence Pipeline CI/CD
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  run-pipeline:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Authenticate to Google Cloud
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: 'projects/276011370520/locations/global/workloadIdentityPools/github-pool/providers/github-provider'
+          service_account: 'pipeline-runner@market-intelligence-pipeline.iam.gserviceaccount.com'
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install dbt-bigquery
+
+      - name: Create dbt profiles
+        run: |
+          mkdir -p ~/.dbt
+          cat > ~/.dbt/profiles.yml << EOF
+          market_intelligence_dbt:
+            target: dev
+            outputs:
+              dev:
+                type: bigquery
+                method: oauth
+                project: market-intelligence-pipeline
+                dataset: market_intelligence
+                location: US
+                threads: 4
+          EOF
+
+      - name: Run Data Ingestion Pipeline
+        env:
+          ALPHA_VANTAGE_API_KEY: ${{ secrets.ALPHA_VANTAGE_API_KEY }}
+          TICKERS: ${{ secrets.TICKERS }}
+        run: python src/main.py
+
+      - name: Install dbt Packages
+        run: |
+          cd market_intelligence_dbt
+          dbt deps
+
+      - name: Run dbt Models
+        run: |
+          cd market_intelligence_dbt
+          dbt run
+
+      - name: Run dbt Tests
+        run: |
+          cd market_intelligence_dbt
+          dbt test
