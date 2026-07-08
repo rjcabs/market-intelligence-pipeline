@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 def load_pipeline_config():
     # Load .env variables
-    load_dotenv()
+    load_dotenv(override=False)
 
     # Access secrets
     api_key = os.getenv('ALPHAVANTAGE_API_KEY')
