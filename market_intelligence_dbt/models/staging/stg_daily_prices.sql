@@ -17,3 +17,4 @@ renamed_and_casted as (
     from source_data
 )
 select * from renamed_and_casted
+
