@@ -29,7 +29,9 @@ if __name__ == '__main__':
     try:
         config = load_pipeline_config()
         print('Configuration loaded successfully!')
-        print(f'API KEY: {config['api_key'][:4]}...[REDACTED]')
-        print(f'TARGET SYMBOLS: {config['tickers']}')
+        api_key_preview = config['api_key'][:4]
+        tickers_preview = config['tickers']
+        print(f'API KEY: {api_key_preview}...[REDACTED]')
+        print(f'TARGET SYMBOLS: {tickers_preview}')
     except ValueError as e:
         print(f'Initialization Failed: {e}')
