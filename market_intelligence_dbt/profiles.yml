@@ -1,0 +1,12 @@
+market_intelligence_dbt:
+  outputs:
+    dev:
+      type: bigquery
+      method: oauth
+      token: "{{ env_var('DBT_BIGQUERY_TOKEN') }}"
+      project: market-intelligence-pipeline
+      dataset: market_intelligence
+      threads: 4
+      timeout_seconds: 300
+      location: US
+  target: dev

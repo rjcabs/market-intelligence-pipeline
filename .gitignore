@@ -10,3 +10,4 @@ market_intelligence_dbt/target/
 logs/
 *.log
 pipeline-env-311/
+.user.yml
