@@ -21,6 +21,7 @@ jobs:
         id: auth
         uses: google-github-actions/auth@v2
         with:
+          token_format: 'access_token'
           workload_identity_provider: 'projects/276011370520/locations/global/workloadIdentityPools/github-pool/providers/github-provider'
           service_account: 'pipeline-runner@market-intelligence-pipeline.iam.gserviceaccount.com'
 
@@ -64,6 +65,8 @@ jobs:
           dbt deps
 
       - name: Run dbt Models
+        env:
+          DBT_BIGQUERY_TOKEN: ${{ steps.auth.outputs.access_token }}
         run: |
           cd market_intelligence_dbt
           dbt run

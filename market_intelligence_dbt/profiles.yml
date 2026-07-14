@@ -3,7 +3,7 @@ market_intelligence_dbt:
     dev:
       type: bigquery
       method: oauth
-      token: "{{ env_var('DBT_BIGQUERY_TOKEN') }}"
+      token: "{{ env_var('DBT_BIGQUERY_TOKEN', '') }}"
       project: market-intelligence-pipeline
       dataset: market_intelligence
       threads: 4
